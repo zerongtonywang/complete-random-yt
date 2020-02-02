@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-const CORS_BYPASS = "http://localhost:8080/";
+// const CORS_BYPASS = "http://localhost:8080/";
+const CORS_BYPASS = "https://c24641b5.ngrok.io/";
 const YT_BASE_URL = "https://www.youtube.com/watch?v=";
 
 const LETTERS = "abcdefghijklmnopqrstuvwxyz";
@@ -10,7 +11,8 @@ const SPECIAL_CHARS = "-_";
 const CHARS = LETTERS + LETTERS.toUpperCase() + NUMBERS + SPECIAL_CHARS;
 
 async function verify(id: string) {
-  const imgLink = CORS_BYPASS + "http://img.youtube.com/vi/" + id + "/mqdefault.jpg";
+  const imgLink =
+    CORS_BYPASS + "http://img.youtube.com/vi/" + id + "/mqdefault.jpg";
   return fetch(imgLink, {
     headers: {}
   })
@@ -80,7 +82,7 @@ const App = () => {
           onClick={genLink}
           disabled={!link}
         >
-          generat{link ? 'e' : 'ing...'}
+          generat{link ? "e" : "ing..."}
         </button>
       </div>
       <a target="_blank" rel="noopener noreferrer" href={link}>
