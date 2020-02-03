@@ -48,6 +48,8 @@ const App = () => {
   const [counter, setCounter] = useState(0);
   const [inProgress, setInProgress] = useState(false);
 
+  const latestVerifiedLink = verifiedLinks[0];
+
   useEffect(() => {
     genLink();
   }, []);
@@ -98,9 +100,13 @@ const App = () => {
       </div>
 
       <p>attempts: {counter}</p>
-      <a target="_blank" rel="noopener noreferrer" href={link}>
-        {link}
-      </a>
+      {inProgress ? (
+        <p>{link}</p>
+      ) : latestVerifiedLink && (
+        <a target="_blank" rel="noopener noreferrer" href={latestVerifiedLink}>
+          {latestVerifiedLink}
+        </a>
+      )}
     </div>
   );
 };
