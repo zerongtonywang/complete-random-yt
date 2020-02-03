@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-// const CORS_BYPASS = "http://localhost:8080/";
-const CORS_BYPASS = "https://c24641b5.ngrok.io/";
+const CORS_BYPASS = "http://localhost:8080/";
+// const CORS_BYPASS = "https://c24641b5.ngrok.io/";
 const YT_BASE_URL = "https://www.youtube.com/watch?v=";
 
 const LETTERS = "abcdefghijklmnopqrstuvwxyz";
@@ -42,29 +42,40 @@ function makeYTLink(id: string) {
   return YT_BASE_URL + id;
 }
 
-async function createLink() {
-  // rick roll - dQw4w9WgXcQ
-  let id = genId();
-  let newVerified = await verify(id);
-  console.log(makeYTLink(id));
-  while (!newVerified) {
-    id = genId();
-    newVerified = await verify(id);
-  }
-  return makeYTLink(id);
-}
-
 const App = () => {
   const [link, setLink] = useState("");
+  const [verifiedLinks, setVerifiedLinks] = useState<string[]>([]);
+  const [counter, setCounter] = useState(0);
+  const [inProgress, setInProgress] = useState(false);
 
   useEffect(() => {
     genLink();
   }, []);
 
-  async function genLink() {
-    const link = await createLink();
-    setLink(link);
+  useEffect(() => {
+    if (inProgress) {
+      genLink();
+    }
+  }, [counter]);
+
+  function genLink() {
+    setInProgress(true);
+    const id = genId();
+    const newLink = makeYTLink(id);
+    setLink(newLink);
+    verify(id).then(verified => {
+      if (verified) {
+        setVerifiedLinks([...verifiedLinks, newLink]);
+        setInProgress(false);
+      } else {
+        setCounter(counter + 1);
+      }
+    });
   }
+
+  const handleClick = () => {
+    genLink();
+  };
 
   return (
     <div className="App">
@@ -76,15 +87,17 @@ const App = () => {
       >
         <button
           style={{
-            backgroundColor: !link ? "grey" : "red",
+            backgroundColor: inProgress ? "grey" : "red",
             color: "white"
           }}
-          onClick={genLink}
-          disabled={!link}
+          onClick={handleClick}
+          disabled={inProgress}
         >
-          generat{link ? "e" : "ing..."}
+          generat{inProgress ? "ing ..." : "e"}
         </button>
       </div>
+
+      <p>attempts: {counter}</p>
       <a target="_blank" rel="noopener noreferrer" href={link}>
         {link}
       </a>
