@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-const CORS_BYPASS = "http://localhost:8080/";
-// const CORS_BYPASS = "https://c24641b5.ngrok.io/";
+// const CORS_BYPASS = "http://localhost:8080/";
+const CORS_BYPASS = "https://c24641b5.ngrok.io/";
 const YT_BASE_URL = "https://www.youtube.com/watch?v=";
 
 const LETTERS = "abcdefghijklmnopqrstuvwxyz";
